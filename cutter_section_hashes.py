@@ -23,6 +23,7 @@ class SectionHashesWidget(cutter.CutterDockWidget):
         self.table_data = QStandardItemModel(0, 4)
 
         self.init_table()
+        QObject.connect(cutter.core(), SIGNAL("seekChanged(RVA)"), self.update_contents)
 
     def init_table(self):
         self.table.setModel(self.table_data)
@@ -30,10 +31,7 @@ class SectionHashesWidget(cutter.CutterDockWidget):
         self.table_data.setHeaderData(1, Qt.Horizontal, "Address")
         self.table_data.setHeaderData(2, Qt.Horizontal, "Size")
         self.table_data.setHeaderData(3, Qt.Horizontal, "Hash")
-
         self.setWidget(self.table)
-
-        QObject.connect(cutter.core(), SIGNAL("seekChanged(RVA)"), self.update_contents)
 
     def update_contents(self):
         # Add table using example from https://pythonbasics.org/pyqt-table/
@@ -47,6 +45,8 @@ class SectionHashesWidget(cutter.CutterDockWidget):
                 self.table_data.setItem(row_count, 2, QStandardItem(str(hex(section_info["size"]))))
                 self.table_data.setItem(row_count, 3, QStandardItem(section_info["md5"]))
                 row_count += 1
+        for i in range(4):
+            self.table.resizeColumnToContents(i)
 
 
 class SectionHashes(cutter.CutterPlugin):
