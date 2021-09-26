@@ -41,6 +41,7 @@ class SectionHashesWidget(cutter.CutterDockWidget):
         menu.addAction("Copy hash", self.__copy_hash)
         menu.addAction("Copy address", self.__copy_address)
         menu.addAction("Copy size", self.__copy_size)
+        # Add separator example https://stackoverflow.com/a/33939764
         menu.addSeparator()
         menu.addAction("Copy row (Json)", self.__copy_row)
         menu.exec_(self.mapToGlobal(event.pos()))
@@ -58,6 +59,7 @@ class SectionHashesWidget(cutter.CutterDockWidget):
         self.__to_clipboard(str(row_data))
 
     def __copy_name(self):
+        # Get value from QModelIndex https://srinikom.github.io/pyside-docs/PySide/QtCore/QModelIndex.html
         # 0 is column Name. We want the section's name so it is hard coded
         self.__to_clipboard(self.table.selectedIndexes()[0].data())
 
@@ -74,6 +76,7 @@ class SectionHashesWidget(cutter.CutterDockWidget):
         self.__to_clipboard(self.table.selectedIndexes()[2].data())
 
     def __to_clipboard(self, text):
+        # Push value to clipboard https://stackoverflow.com/a/23119741
         clip_board = QApplication.clipboard()
         clip_board.setText(text, mode=clip_board.Clipboard)
 
