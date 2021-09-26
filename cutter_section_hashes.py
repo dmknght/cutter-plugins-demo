@@ -10,7 +10,7 @@ import cutter
 import json
 
 from PySide2.QtCore import QObject, SIGNAL, Qt
-from PySide2.QtWidgets import QAction, QTreeView
+from PySide2.QtWidgets import QAction, QTreeView, QMenu, QApplication
 from PySide2.QtGui import QStandardItemModel, QStandardItem
 
 
@@ -32,6 +32,39 @@ class SectionHashesWidget(cutter.CutterDockWidget):
         self.table_data.setHeaderData(2, Qt.Horizontal, "Size")
         self.table_data.setHeaderData(3, Qt.Horizontal, "Hash")
         self.setWidget(self.table)
+
+    def contextMenuEvent(self, event):
+        # Tutorial example https://codeloop.org/how-to-create-context-menu-in-pyqt5/
+        menu = QMenu()
+        menu.addAction("Copy row (json)", self.__copy_row)
+        menu.addAction("Copy name", self.__copy_name)
+        menu.addAction("Copy hash", self.__copy_hash)
+        menu.addAction("Copy address", self.__copy_address)
+        menu.addAction("Copy size", self.__copy_size)
+        menu.exec_(self.mapToGlobal(event.pos()))
+
+    def __copy_row(self):
+        pass
+
+    def __copy_name(self):
+        # 0 is column Name. We want the section's name so it is hard coded
+        self.__to_clipboard(self.table.selectedIndexes()[0].data())
+
+    def __copy_hash(self):
+        # 3 is column Hash. We want the section's hash so it is hard coded
+        self.__to_clipboard(self.table.selectedIndexes()[3].data())
+
+    def __copy_address(self):
+        # 1 is column Address. We want the section's address so it is hard coded
+        self.__to_clipboard(self.table.selectedIndexes()[1].data())
+
+    def __copy_size(self):
+        # 2 is column size. We want the section's size so it is hard coded
+        self.__to_clipboard(self.table.selectedIndexes()[2].data())
+
+    def __to_clipboard(self, text):
+        clip_board = QApplication.clipboard()
+        clip_board.setText(text, mode=clip_board.Clipboard)
 
     def update_contents(self):
         # Add table using example from https://pythonbasics.org/pyqt-table/
