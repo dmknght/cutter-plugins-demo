@@ -37,11 +37,12 @@ class SectionHashesWidget(cutter.CutterDockWidget):
     def contextMenuEvent(self, event):
         # Tutorial example https://codeloop.org/how-to-create-context-menu-in-pyqt5/
         menu = QMenu()
-        menu.addAction("Copy row (json)", self.__copy_row)
         menu.addAction("Copy name", self.__copy_name)
         menu.addAction("Copy hash", self.__copy_hash)
         menu.addAction("Copy address", self.__copy_address)
         menu.addAction("Copy size", self.__copy_size)
+        menu.addSeparator()
+        menu.addAction("Copy row (Json)", self.__copy_row)
         menu.exec_(self.mapToGlobal(event.pos()))
 
     def __copy_row(self):
