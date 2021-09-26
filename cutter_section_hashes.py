@@ -23,7 +23,7 @@ class SectionHashesWidget(cutter.CutterDockWidget):
         self.table_data = QStandardItemModel(0, 4)
 
         self.init_table()
-        QObject.connect(cutter.core(), SIGNAL("seekChanged(RVA)"), self.update_contents)
+        # QObject.connect(cutter.core(), SIGNAL("seekChanged(RVA)"), self.update_contents)
 
     def init_table(self):
         self.table.setModel(self.table_data)
