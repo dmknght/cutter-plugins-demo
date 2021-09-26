@@ -10,7 +10,7 @@ import cutter
 import json
 
 from PySide2.QtCore import QObject, SIGNAL, Qt
-from PySide2.QtWidgets import QAction, QTreeView, QMenu, QApplication
+from PySide2.QtWidgets import QAction, QTreeView, QMenu, QApplication, QTableWidget
 from PySide2.QtGui import QStandardItemModel, QStandardItem
 
 
@@ -27,6 +27,7 @@ class SectionHashesWidget(cutter.CutterDockWidget):
 
     def init_table(self):
         self.table.setModel(self.table_data)
+        self.table.setEditTriggers(QTableWidget.NoEditTriggers)
         self.table_data.setHeaderData(0, Qt.Horizontal, "Name")
         self.table_data.setHeaderData(1, Qt.Horizontal, "Address")
         self.table_data.setHeaderData(2, Qt.Horizontal, "Size")
@@ -44,7 +45,16 @@ class SectionHashesWidget(cutter.CutterDockWidget):
         menu.exec_(self.mapToGlobal(event.pos()))
 
     def __copy_row(self):
-        pass
+        row_data = {
+            "Name": "",
+            "Address": "",
+            "Size": "",
+            "Hash": "",
+        }
+
+        for column_id, key in enumerate(row_data.keys()):
+            row_data[key] = self.table.selectedIndexes()[column_id].data()
+        self.__to_clipboard(str(row_data))
 
     def __copy_name(self):
         # 0 is column Name. We want the section's name so it is hard coded
